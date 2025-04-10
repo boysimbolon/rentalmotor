@@ -1,0 +1,37 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache files
+.vs/
+.vscode/
+
+# Dependency folders
+node_modules/
+packages/
+
+# Logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# EF Core tools files
+*.dbmdl
+
+# dotenv / secrets
+.env
+
+# MySQL dumps / credentials
+*.sql
+
+# Publish artifacts
+publish/
