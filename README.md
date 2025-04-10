@@ -42,40 +42,43 @@ cd rentalMotor
 2. Jalankan SQL berikut:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS `rentalmotor` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+-- Hapus database jika sudah ada
+DROP DATABASE IF EXISTS `rentalmotor`;
+
+-- Buat database baru
+CREATE DATABASE `rentalmotor`;
+
+-- Gunakan database
 USE `rentalmotor`;
 
-CREATE TABLE `datarental` (
-  `Id` int NOT NULL,
-  `IdMotor` int NOT NULL,
-  `Nama` varchar(100) NOT NULL,
-  `NoTelpon` varchar(20) NOT NULL,
-  `Email` varchar(100) DEFAULT NULL,
-  `StatusSewa` int NOT NULL,
-  `TanggalSewa` date NOT NULL,
-  `LamaSewa` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
+-- Buat tabel `motor`
 CREATE TABLE `motor` (
-  `Id` int NOT NULL,
-  `NamaMotor` varchar(100) NOT NULL,
-  `PlatMotor` varchar(20) NOT NULL,
-  `HargaSewa` decimal(10,2) NOT NULL
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `NamaMotor` VARCHAR(100) NOT NULL,
+  `PlatMotor` VARCHAR(20) NOT NULL,
+  `HargaSewa` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-ALTER TABLE `datarental`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `IdMotor` (`IdMotor`);
-ALTER TABLE `motor`
-  ADD PRIMARY KEY (`Id`);
-ALTER TABLE `datarental`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE `motor`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-ALTER TABLE `datarental`
-  ADD CONSTRAINT `datarental_ibfk_1` FOREIGN KEY (`IdMotor`) REFERENCES `motor` (`Id`) ON DELETE CASCADE;
-COMMIT;
+-- Buat tabel `datarental`
+CREATE TABLE `datarental` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `IdMotor` INT NOT NULL,
+  `Nama` VARCHAR(100) NOT NULL,
+  `NoTelpon` VARCHAR(20) NOT NULL,
+  `Email` VARCHAR(100) DEFAULT NULL,
+  `StatusSewa` INT NOT NULL,
+  `TanggalSewa` DATE NOT NULL,
+  `LamaSewa` INT NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `idx_IdMotor` (`IdMotor`),
+  CONSTRAINT `datarental_ibfk_1` FOREIGN KEY (`IdMotor`) REFERENCES `motor` (`Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Atur nilai awal auto increment jika ingin
+ALTER TABLE `motor` AUTO_INCREMENT = 3;
+ALTER TABLE `datarental` AUTO_INCREMENT = 8;
+
 ```
 
 ---
