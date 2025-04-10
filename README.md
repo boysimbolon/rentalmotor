@@ -1,13 +1,13 @@
-# RentalMotorApp íº€
+# RentalMotorApp 
 
 Aplikasi CRUD sederhana untuk mengelola data **Rental Motor** menggunakan:
-- í´§ .NET 8 Web API (C#) + MySQL
-- í²» Windows Form (C# WinForms) sebagai client
-- í´— Komunikasi via REST API menggunakan `HttpClient`
+-  .NET 8 Web API (C#) + MySQL
+-  Windows Form (C# WinForms) sebagai client
+-  Komunikasi via REST API menggunakan `HttpClient`
 
 ---
 
-## í³ Struktur Project
+##  Struktur Project
 
 ```bash
 rentalMotor/
@@ -25,16 +25,14 @@ rentalMotor/
 
 ---
 
-## í·‘â€í²» Cara Menjalankan di Local
+##  Cara Menjalankan di Local
 
-### í³¦ 1. Clone Repo
+###  1. Clone Repo
 
 ```bash
-git clone https://github.com/username/rentalMotor.git
+git clone https://github.com/boysimbolon/rentalMotor.git
 cd rentalMotor
 ```
-
-> Gantilah `username` dengan akun GitHub kamu jika sudah di-*push* ke repo publik.
 
 ---
 
@@ -44,34 +42,45 @@ cd rentalMotor
 2. Jalankan SQL berikut:
 
 ```sql
-DROP DATABASE IF EXISTS rentalmotor;
-CREATE DATABASE rentalmotor;
+CREATE DATABASE IF NOT EXISTS `rentalmotor` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `rentalmotor`;
 
-USE rentalmotor;
+CREATE TABLE `datarental` (
+  `Id` int NOT NULL,
+  `IdMotor` int NOT NULL,
+  `Nama` varchar(100) NOT NULL,
+  `NoTelpon` varchar(20) NOT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `StatusSewa` int NOT NULL,
+  `TanggalSewa` date NOT NULL,
+  `LamaSewa` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE Motor (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    NamaMotor VARCHAR(100),
-    PlatMotor VARCHAR(50),
-    HargaSewa DECIMAL(10, 2)
-);
 
-CREATE TABLE DataRental (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    IdMotor INT,
-    Nama VARCHAR(100),
-    NoTelpon VARCHAR(20),
-    Email VARCHAR(100),
-    StatusSewa INT,
-    TanggalSewa DATETIME,
-    LamaSewa INT,
-    CONSTRAINT FK_Motor FOREIGN KEY (IdMotor) REFERENCES Motor(Id)
-);
+CREATE TABLE `motor` (
+  `Id` int NOT NULL,
+  `NamaMotor` varchar(100) NOT NULL,
+  `PlatMotor` varchar(20) NOT NULL,
+  `HargaSewa` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE `datarental`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `IdMotor` (`IdMotor`);
+ALTER TABLE `motor`
+  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `datarental`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `motor`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `datarental`
+  ADD CONSTRAINT `datarental_ibfk_1` FOREIGN KEY (`IdMotor`) REFERENCES `motor` (`Id`) ON DELETE CASCADE;
+COMMIT;
 ```
 
 ---
 
-### í³¦ 3. Install NuGet Packages
+### ï¿½ï¿½ï¿½ 3. Install NuGet Packages
 
 Masuk ke folder `API`, lalu install NuGet berikut:
 
@@ -90,7 +99,7 @@ dotnet add package Swashbuckle.AspNetCore
 
 ---
 
-### í·± 4. Setup API (.NET 8 Web API)
+###  4. Setup API (.NET 8 Web API)
 
 1. Masuk ke folder `API`
 2. Update koneksi DB di `appsettings.json`:
@@ -112,7 +121,7 @@ dotnet run
 
 ---
 
-### í²¾ 5. Jalankan Windows Form App
+### 5. Jalankan Windows Form App
 
 1. Buka folder `rentalMotor/` di **Visual Studio**
 2. Pastikan `ApiHelper.cs` sudah mengarah ke URL API:
@@ -126,7 +135,7 @@ client.BaseAddress = new Uri("http://localhost:5050/");
 
 ---
 
-## í·ª Fitur
+## Fitur
 
 - CRUD Motor dan Rental
 - Relasi antar tabel (Motor - DataRental)
@@ -136,7 +145,7 @@ client.BaseAddress = new Uri("http://localhost:5050/");
 
 ---
 
-## í¹Œ Kontribusi
+## Kontribusi
 
 Pull Request terbuka! Jangan lupa untuk `fork` dulu sebelum buat PR.
 
